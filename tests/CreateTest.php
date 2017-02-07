@@ -4,6 +4,8 @@ namespace Fluent\Test;
 
 use function Fluent\create;
 use function Fluent\get;
+use function Fluent\nullIfMissing;
+use function Fluent\ignoreIfMissing;
 use Fluent\PhpConfigLoader;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -124,6 +126,48 @@ class CreateTest extends TestCase
             'stdClass' => create(),
         ]);
         self::assertInstanceOf('stdClass', $container->get('foo')->argument);
+    }
+
+    /**
+     * @test
+     */
+    public function missing_services_can_be_injected_with_null_value()
+    {
+        $fixture = new class(null) {
+            public function __construct($argument)
+            {
+                $this->argument = $argument;
+            }
+        };
+        $className = get_class($fixture);
+        $container = new ContainerBuilder;
+        (new PhpConfigLoader($container))->load([
+            'foo' => create($className)
+                ->arguments(nullIfMissing('Bar'))
+        ]);
+        self::assertNull($container->get('foo')->argument);
+    }
+
+    /**
+     * @test
+     */
+    public function missing_services_can_be_set_with_no_method_call()
+    {
+        $fixture = new class(null) {
+            public $argument = 3;
+
+            public function setArgument($argument)
+            {
+                $this->argument = $argument;
+            }
+        };
+        $className = get_class($fixture);
+        $container = new ContainerBuilder;
+        (new PhpConfigLoader($container))->load([
+            'foo' => create($className)
+                ->method('setArgument', ignoreIfMissing('Bar'))
+        ]);
+        self::assertEquals(3, $container->get('foo')->argument);
     }
 
     /**
