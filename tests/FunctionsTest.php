@@ -3,7 +3,9 @@
 namespace Fluent\Test;
 
 use Fluent\DefinitionHelper\CreateDefinitionHelper;
+use Fluent\DefinitionHelper\ExtendDefinitionHelper;
 use function Fluent\create;
+use function Fluent\extend;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -30,5 +32,12 @@ class FunctionsTest extends TestCase
         $helper = create();
 
         self::assertInstanceOf(CreateDefinitionHelper::class, $helper);
+    }
+
+    public function extend_returns_a_helper()
+    {
+        $helper = extend('parent_service');
+
+        self::assertInstanceOf(ExtendDefinitionHelper::class, $helper);   
     }
 }
