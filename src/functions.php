@@ -7,6 +7,7 @@ use Fluent\DefinitionHelper\AliasDefinitionHelper;
 use Fluent\DefinitionHelper\CreateDefinitionHelper;
 use Fluent\DefinitionHelper\ExtensionConfiguration;
 use Fluent\DefinitionHelper\FactoryDefinitionHelper;
+use Fluent\DefinitionHelper\ExtendDefinitionHelper;
 use Symfony\Component\DependencyInjection\Reference;
 
 // This `if` avoids errors if importing the file twice
@@ -67,6 +68,16 @@ if (!function_exists('Fluent\create')) {
     function autowire(string $className = null) : CreateDefinitionHelper
     {
         return new CreateDefinitionHelper($className, true);
+    }
+
+    /**
+     * Helper for defining a service by extending a parent definition
+     *
+     * @see https://symfony.com/doc/current/service_container/parent_services.html
+     */
+    function extend(string $entryId, string $className = null) : ExtendDefinitionHelper
+    {
+        return new ExtendDefinitionHelper($entryId, $className);
     }
 
     /**
