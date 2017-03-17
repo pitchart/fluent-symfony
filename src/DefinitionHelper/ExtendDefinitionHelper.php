@@ -56,4 +56,56 @@ class ExtendDefinitionHelper implements DefinitionHelper
     	return $this;
     }
 
+    /**
+     * Define the entry as lazy.
+     *
+     * A lazy entry is created only when it is used, a proxy is injected instead.
+     */
+    public function lazy() : self
+    {
+        $this->definition->setLazy(true);
+
+        return $this;
+    }
+
+    /**
+     * Adds a tag to the current definition
+     *
+     * Can be used multiple times to declare multiple calls.
+     *
+     * @param string $name       The tag name
+     * @param array  $attributes An array of attributes
+     */
+    public function tag(string $name, array $attributes = []) : self
+    {
+        $this->definition->addTag($name, $attributes);
+
+        return $this;
+    }
+
+    /**
+
+     * Mark the service as deprecated
+     *
+     * @param  string|null  $template Template message to use if the definition is deprecated
+     *
+     * @throws InvalidArgumentException
+     */
+    public function deprecate(string $template = null) : self
+    {
+        $this->definition->setDeprecated(true, $template);
+
+        return $this;
+    }
+
+    /**
+     * Marks the definition as private
+     */
+    public function private() : self
+    {
+        $this->definition->setPublic(false);
+
+        return $this;
+    }
+
 }
