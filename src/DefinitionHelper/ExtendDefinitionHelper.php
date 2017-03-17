@@ -5,7 +5,13 @@ namespace Fluent\DefinitionHelper;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\DefinitionDecorator;
+use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
 
+/**
+ * Helps defining how to create an instance of a class from a parent definition.
+ *
+ * @author Julien VITTE <vitte.julien@gmail.fr>
+ */
 class ExtendDefinitionHelper implements DefinitionHelper
 {
 	/**
@@ -16,7 +22,7 @@ class ExtendDefinitionHelper implements DefinitionHelper
 	/**
      * Helper for defining an object.
      *
-     * @param string      $entryId   
+     * @param string      $entryId
      * @param string|null $className Class name of the object.
      *                               If null, the name of the entry (in the container) will be used as class name.
      */
@@ -37,7 +43,7 @@ class ExtendDefinitionHelper implements DefinitionHelper
 
     /**
      * Overwrite an existing argument of the parent definition.
-     * 
+     *
      * @param  int    $index    the position of the argument to replace
      * @param  mixed  $argument the value of the argument
      */
