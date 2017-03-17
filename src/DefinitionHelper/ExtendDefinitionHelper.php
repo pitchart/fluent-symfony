@@ -29,7 +29,9 @@ class ExtendDefinitionHelper implements DefinitionHelper
     public function __construct(string $entryId, string $className = null)
     {
         $this->definition = new DefinitionDecorator($entryId);
-        $this->definition->setClass($className);
+        if ($className != null) {
+            $this->definition->setClass($className);
+        }
     }
 
     public function register(string $entryId, ContainerBuilder $container)
